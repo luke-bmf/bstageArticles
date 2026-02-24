@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>문서</title>
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      background: #fff;
+      color: #1a1a1a;
+    }
+    /* Topbar */
+    .topbar {
+      flex-shrink: 0;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      border-bottom: 1px solid #e5e7eb;
+      background: #fff;
+    }
+    .topbar-brand {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+    .topbar-brand img {
+      height: 25px;
+      width: auto;
+    }
+    .topbar-brand-text {
+      color: #000;
+      text-align: center;
+      font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+      font-size: 16px;
+      font-style: normal;
+      font-weight: 600;
+      line-height: 22px;
+    }
+    /* Main layout */
+    .main {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+    /* Left panel */
+    .left-panel {
+      flex-shrink: 0;
+      width: 280px;
+      border-right: 1px solid #e5e7eb;
+      background: #fafafa;
+      overflow-y: auto;
+    }
+    .left-panel-nav {
+      padding: 20px 0;
+    }
+    .nav-section-title {
+      font-size: 11px;
+      font-weight: 600;
+      color: #9ca3af;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      padding: 8px 24px;
+      margin-top: 16px;
+    }
+    .nav-section-title:first-child { margin-top: 0; }
+    .nav-item {
+      display: block;
+      padding: 10px 24px;
+      font-size: 14px;
+      color: #4b5563;
+      text-decoration: none;
+      transition: color 0.15s, background 0.15s;
+    }
+    .nav-item:hover {
+      color: #1a1a1a;
+      background: #f3f4f6;
+    }
+    .nav-item.active {
+      color: #2f8bf4;
+      font-weight: 600;
+      background: #eff6ff;
+      border-right: 3px solid #2f8bf4;
+    }
+    .nav-tree {
+      margin-top: 8px;
+    }
+    .nav-tree .nav-item {
+      padding-left: 40px;
+      font-size: 13px;
+    }
+    /* Right panel */
+    .right-panel {
+      flex: 1;
+      overflow: auto;
+      background: #fff;
+    }
+    .right-panel iframe {
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+      border: none;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="topbar-brand">
+      <img src="logo.svg" alt="로고">
+      <span class="topbar-brand-text">커스텀 빌드</span>
+    </div>
+  </header>
+  <div class="main">
+    <aside class="left-panel">
+      <nav class="left-panel-nav">
+        <div class="nav-section-title">가이드</div>
+        <a href="#" class="nav-item active" data-doc="custom-build-guide.html" data-doc-id="custom-build">커스텀 빌드 종합가이드</a>
+        <div class="nav-tree">
+          <a href="#" class="nav-item" data-doc="custom-environment-setup.html" data-doc-id="custom-env">커스텀 환경세팅</a>
+          <a href="#" class="nav-item" data-doc="cicd-guide.html" data-doc-id="cicd">CI/CD 가이드</a>
+          <a href="#" class="nav-item" data-doc="liquid-template-development-guide.html" data-doc-id="liquid">Liquid 템플릿 개발가이드</a>
+        </div>
+      </nav>
+    </aside>
+    <main class="right-panel">
+      <iframe id="doc-frame" src="custom-build-guide.html" title="커스텀 빌드 종합 가이드"></iframe>
+    </main>
+  </div>
+  <script>
+    const docFrame = document.getElementById('doc-frame');
+    const navItems = document.querySelectorAll('.nav-item[data-doc]');
+
+    function loadDoc(src, activeEl) {
+      if (!src) return;
+      docFrame.src = src;
+      navItems.forEach(n => n.classList.remove('active'));
+      if (activeEl) activeEl.classList.add('active');
+    }
+
+    function syncFromHash() {
+      const hash = window.location.hash.slice(1);
+      if (hash) {
+        const el = document.querySelector(`.nav-item[data-doc-id="${hash}"]`);
+        if (el) loadDoc(el.dataset.doc, el);
+      }
+    }
+
+    navItems.forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        const src = el.dataset.doc;
+        const id = el.dataset.docId;
+        loadDoc(src, el);
+        if (id) window.location.hash = id;
+      });
+    });
+
+    window.addEventListener('hashchange', syncFromHash);
+    syncFromHash();
+  </script>
+</body>
+</html>
