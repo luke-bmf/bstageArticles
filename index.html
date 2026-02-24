@@ -112,6 +112,50 @@
       border: none;
       display: block;
     }
+    /* Mobile doc tabs - shown only on mobile, below topbar */
+    .mobile-doc-tabs {
+      display: none;
+      flex-shrink: 0;
+      gap: 4px;
+      padding: 12px 16px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      background: #fff;
+      border-bottom: 1px solid #e5e7eb;
+      scrollbar-width: none;
+    }
+    .mobile-doc-tabs::-webkit-scrollbar {
+      display: none;
+    }
+    .mobile-doc-tab {
+      flex-shrink: 0;
+      padding: 8px 14px;
+      font-size: 13px;
+      color: #4b5563;
+      background: #f3f4f6;
+      border-radius: 8px;
+      text-decoration: none;
+      white-space: nowrap;
+      transition: color 0.15s, background 0.15s;
+    }
+    .mobile-doc-tab:hover {
+      color: #1a1a1a;
+      background: #e5e7eb;
+    }
+    .mobile-doc-tab.active {
+      color: #2f8bf4;
+      font-weight: 600;
+      background: #eff6ff;
+    }
+    @media (max-width: 767px) {
+      .left-panel {
+        display: none;
+      }
+      .mobile-doc-tabs {
+        display: flex;
+      }
+    }
   </style>
 </head>
 <body>
@@ -121,6 +165,12 @@
       <span class="topbar-brand-text">커스텀 빌드</span>
     </div>
   </header>
+  <nav class="mobile-doc-tabs" aria-label="문서 선택">
+    <a href="#" class="mobile-doc-tab active" data-doc="custom-build-guide.html" data-doc-id="custom-build">종합가이드</a>
+    <a href="#" class="mobile-doc-tab" data-doc="custom-environment-setup.html" data-doc-id="custom-env">환경세팅</a>
+    <a href="#" class="mobile-doc-tab" data-doc="cicd-guide.html" data-doc-id="cicd">CI/CD</a>
+    <a href="#" class="mobile-doc-tab" data-doc="liquid-template-development-guide.html" data-doc-id="liquid">Liquid</a>
+  </nav>
   <div class="main">
     <aside class="left-panel">
       <nav class="left-panel-nav">
@@ -140,29 +190,42 @@
   <script>
     const docFrame = document.getElementById('doc-frame');
     const navItems = document.querySelectorAll('.nav-item[data-doc]');
+    const mobileTabs = document.querySelectorAll('.mobile-doc-tab[data-doc]');
 
-    function loadDoc(src, activeEl) {
+    function loadDoc(src, activeNavEl, activeTabEl) {
       if (!src) return;
       docFrame.src = src;
       navItems.forEach(n => n.classList.remove('active'));
-      if (activeEl) activeEl.classList.add('active');
+      mobileTabs.forEach(t => t.classList.remove('active'));
+      if (activeNavEl) activeNavEl.classList.add('active');
+      if (activeTabEl) activeTabEl.classList.add('active');
     }
 
     function syncFromHash() {
       const hash = window.location.hash.slice(1);
       if (hash) {
-        const el = document.querySelector(`.nav-item[data-doc-id="${hash}"]`);
-        if (el) loadDoc(el.dataset.doc, el);
+        const navEl = document.querySelector(`.nav-item[data-doc-id="${hash}"]`);
+        const tabEl = document.querySelector(`.mobile-doc-tab[data-doc-id="${hash}"]`);
+        const src = navEl?.dataset.doc || tabEl?.dataset.doc;
+        if (src) loadDoc(src, navEl, tabEl);
       }
     }
 
     navItems.forEach(el => {
       el.addEventListener('click', (e) => {
         e.preventDefault();
-        const src = el.dataset.doc;
-        const id = el.dataset.docId;
-        loadDoc(src, el);
-        if (id) window.location.hash = id;
+        const tabEl = document.querySelector(`.mobile-doc-tab[data-doc-id="${el.dataset.docId}"]`);
+        loadDoc(el.dataset.doc, el, tabEl);
+        if (el.dataset.docId) window.location.hash = el.dataset.docId;
+      });
+    });
+
+    mobileTabs.forEach(el => {
+      el.addEventListener('click', (e) => {
+        e.preventDefault();
+        const navEl = document.querySelector(`.nav-item[data-doc-id="${el.dataset.docId}"]`);
+        loadDoc(el.dataset.doc, navEl, el);
+        if (el.dataset.docId) window.location.hash = el.dataset.docId;
       });
     });
 
