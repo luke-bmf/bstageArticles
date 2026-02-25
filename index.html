@@ -117,13 +117,12 @@
     .mobile-doc-tabs {
       display: none;
       flex-shrink: 0;
-      gap: 4px;
-      padding: 12px 16px;
+      gap: 8px;
+      padding: 12px 16px 0;
       overflow-x: auto;
       overflow-y: hidden;
       -webkit-overflow-scrolling: touch;
       background: #fff;
-      border-bottom: 1px solid #e5e7eb;
       scrollbar-width: none;
     }
     .mobile-doc-tabs::-webkit-scrollbar {
@@ -133,21 +132,23 @@
       flex-shrink: 0;
       padding: 8px 14px;
       font-size: 13px;
-      color: #4b5563;
-      background: #f3f4f6;
-      border-radius: 8px;
+      color: #6e6e6e;
+      background: transparent;
+      border: 1px solid #e0e0e0;
+      border-radius: 9999px;
       text-decoration: none;
       white-space: nowrap;
-      transition: color 0.15s, background 0.15s;
+      transition: color 0.15s, background 0.15s, border-color 0.15s;
     }
     .mobile-doc-tab:hover {
-      color: #1a1a1a;
-      background: #e5e7eb;
+      color: #4b5563;
+      background: #e5e5e5;
     }
     .mobile-doc-tab.active {
-      color: #2f8bf4;
+      color: #fff;
       font-weight: 600;
-      background: #eff6ff;
+      background: #000;
+      border-color: #000;
     }
     @media (max-width: 767px) {
       .left-panel {
