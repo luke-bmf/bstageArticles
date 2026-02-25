@@ -58,12 +58,12 @@
     .left-panel {
       flex-shrink: 0;
       width: 280px;
-      border-right: 1px solid #e5e7eb;
-      background: #fafafa;
+      padding: 16px;
+      background: #fff;
       overflow-y: auto;
     }
     .left-panel-nav {
-      padding: 20px 0;
+      padding: 4px 0;
     }
     .nav-section-title {
       font-size: 11px;
@@ -71,16 +71,18 @@
       color: #9ca3af;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      padding: 8px 24px;
+      padding: 8px 12px;
       margin-top: 16px;
     }
     .nav-section-title:first-child { margin-top: 0; }
     .nav-item {
       display: block;
-      padding: 10px 24px;
+      padding: 12px 16px;
+      margin: 4px 0;
       font-size: 14px;
       color: #4b5563;
       text-decoration: none;
+      border-radius: 12px;
       transition: color 0.15s, background 0.15s;
     }
     .nav-item:hover {
@@ -88,17 +90,15 @@
       background: #f3f4f6;
     }
     .nav-item.active {
-      color: #2f8bf4;
+      color: #1a1a1a;
       font-weight: 600;
-      background: #eff6ff;
-      border-right: 3px solid #2f8bf4;
+      background: #e5e7eb;
     }
     .nav-tree {
-      margin-top: 8px;
+      margin-top: 4px;
     }
     .nav-tree .nav-item {
-      padding-left: 40px;
-      font-size: 13px;
+      padding-left: 24px;
     }
     /* Right panel */
     .right-panel {
@@ -171,6 +171,7 @@
     <a href="#" class="mobile-doc-tab" data-doc="custom-environment-setup.html" data-doc-id="custom-env">환경세팅</a>
     <a href="#" class="mobile-doc-tab" data-doc="cicd-guide.html" data-doc-id="cicd">CI/CD</a>
     <a href="#" class="mobile-doc-tab" data-doc="liquid-template-development-guide.html" data-doc-id="liquid">Liquid</a>
+    <a href="#" class="mobile-doc-tab" data-doc="gateway-api-usage-guide.html" data-doc-id="gateway-api">Gateway API</a>
   </nav>
   <div class="main">
     <aside class="left-panel">
@@ -181,6 +182,7 @@
           <a href="#" class="nav-item" data-doc="custom-environment-setup.html" data-doc-id="custom-env">커스텀 환경세팅</a>
           <a href="#" class="nav-item" data-doc="cicd-guide.html" data-doc-id="cicd">CI/CD 가이드</a>
           <a href="#" class="nav-item" data-doc="liquid-template-development-guide.html" data-doc-id="liquid">Liquid 템플릿 개발가이드</a>
+          <a href="#" class="nav-item" data-doc="gateway-api-usage-guide.html" data-doc-id="gateway-api">Gateway API 활용 가이드</a>
         </div>
       </nav>
     </aside>
